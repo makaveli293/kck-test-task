@@ -19,11 +19,7 @@
       </tr>
       <tr>
         <td>Номер накладной</td>
-        <td v-if="isEdit" class="tableInvoice">{{ item.invoiceNumber }}</td>
-        <input v-else
-               @change="editInvoice"
-          id="invoice"
-          name="invoice" type="text" placeholder="Введите значение">
+        <td class="tableInvoice">{{ item.invoiceNumber }}</td>
       </tr>
       <tr>
         <td>Время прибытия на выгрузку</td>
@@ -42,21 +38,8 @@
 export default {
   name: 'WidgetItem',
   props: ['item'],
-  data() {
-    return {
-      isEdit: true,
-      editInvoiceNumber: '',
-    };
-  },
   methods: {
     editCard() {
-      this.isEdit = !this.isEdit;
-    },
-    editInvoice() {
-      this.item.invoiceNumber = this.editInvoiceNumber;
-      this.$emit('editInfo', {
-        editInvoiceNumber: this.editInvoiceNumber,
-      });
       this.isEdit = !this.isEdit;
     },
   },
