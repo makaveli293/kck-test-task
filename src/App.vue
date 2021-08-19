@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="home">
-      <Header/>
+      <header-block/>
       <main class="main">
         <div class="container">
           <div class="main__area">
@@ -11,15 +11,13 @@
               </div>
               <div v-click-outside="onClickOutside" v-if="isModal">
                 <modal-window
-                  @updateParent="onUpdateChild"
-                  @closeModalW="openModal"
-                  @my-event="addToArr"></modal-window>
+                  @closeModalW="openModal"></modal-window>
               </div>
-              <filter-block @search="filter"></filter-block>
+              <filter-block></filter-block>
             </div>
             <div class="items-area">
-              <sorting-block @sorting="sorting"></sorting-block>
-              <router-view :arrComponents="this.filteredArr"></router-view>
+              <sorting-block></sorting-block>
+              <router-view></router-view>
             </div>
             <div class="view-change">
               <router-link to="/table-view" class="to-table-page"></router-link>
@@ -33,101 +31,27 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
+import { mapGetters, mapActions } from 'vuex';
+import HeaderBlock from '@/components/HeaderBlock.vue';
 import ModalWindow from '@/components/ModalWindow.vue';
 import FilterBlock from '@/components/FilterBlock.vue';
 import SortingBlock from '@/components/SortingBlock.vue';
 
 export default {
-  name: 'TableView',
+  name: 'App',
   data() {
     return {
       isModal: false,
-      arrComponents: [],
-      filteredArr: [],
-      orderInfo: '',
-      sortingType: '',
     };
   },
+  computed: {
+    ...mapGetters(['allPosts']),
+  },
   mounted() {
-    if (localStorage.getItem('arrStorage') !== null) {
-      this.arrComponents = JSON.parse(localStorage.getItem('arrStorage'));
-      this.filteredArr = JSON.parse(localStorage.getItem('arrStorage'));
-    }
+    this.getArray();
   },
   methods: {
-    deleteItem(key) {
-      this.filteredArr.forEach((el, index) => {
-        if (el.id === key) {
-          this.filteredArr.splice(index, 1);
-        }
-        return false;
-      });
-      this.saveArr();
-    },
-    saveArr() {
-      localStorage.setItem('arrStorage', JSON.stringify(this.filteredArr));
-    },
-    filter(value) {
-      const regexpOrder = new RegExp(value.order, 'i');
-      const regexpInvoice = new RegExp(value.invoice, 'i');
-      const regexpId = new RegExp(value.id, 'i');
-      this.filteredArr = this.arrComponents.filter((el) => {
-        if ((regexpOrder.test(el.orderType))
-          && (regexpInvoice.test(el.invoiceNumber))
-          && (regexpId.test(el.id))) {
-          return el;
-        }
-        return false;
-      });
-    },
-    sorting(value) {
-      this.sortingType = value.sortingType;
-      switch (this.sortingType) {
-        case 'ID':
-          this.filteredArr.sort((a, b) => {
-            if (a.id < b.id) {
-              return -1;
-            }
-            if (a.id > b.id) {
-              return 1;
-            }
-            return 0;
-          });
-          this.saveArr();
-          break;
-        case 'Дата создания':
-          this.filteredArr.sort((a, b) => {
-            if (a.dateCreation < b.dateCreation) {
-              return -1;
-            }
-            if (a.dateCreation > b.dateCreation) {
-              return 1;
-            }
-            return 0;
-          });
-          this.saveArr();
-          break;
-        case 'Тип заказа':
-          this.filteredArr.sort((a, b) => {
-            if (a.orderType < b.orderType) {
-              return -1;
-            }
-            if (a.orderType > b.orderType) {
-              return 1;
-            }
-            return 0;
-          });
-          this.saveArr();
-          break;
-        default:
-          return 0;
-      }
-      return 0;
-    },
-    onUpdateChild(invoice) {
-      this.orderInfo = invoice;
-    },
+    ...mapActions(['getArray']),
     openModal() {
       this.isModal = !this.isModal;
     },
@@ -136,26 +60,9 @@ export default {
         this.openModal();
       }
     },
-    addToArr() {
-      const currentDateWithFormat = new Date()
-        .toJSON()
-        .slice(0, 10)
-        .replace(/-/g, '/');
-
-      this.filteredArr.push({
-        id: Math.floor(Math.random() * (1000 - 1 + 1)) + 1,
-        dateCreation: currentDateWithFormat || '-',
-        invoiceNumber: this.orderInfo.invoice || '-',
-        arrivalTime: this.orderInfo.time || '-',
-        title: `Товар: ${Math.floor(Math.random() * (1000 - 1 + 1)) + 1}`,
-        orderType: this.orderInfo.orderType || '-',
-      });
-      this.saveArr();
-      this.openModal();
-    },
   },
   components: {
-    Header,
+    HeaderBlock,
     ModalWindow,
     FilterBlock,
     SortingBlock,

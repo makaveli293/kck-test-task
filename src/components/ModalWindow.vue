@@ -6,7 +6,7 @@
         <div @click="closeModal" class="modal-window-close">
           <img src="../assets/close.png" alt="">
         </div>
-        <div class="">
+        <div>
           <label for="invoice">Номер накладной</label>
           <input
             v-model="invoice"
@@ -27,7 +27,7 @@
             <option value="ruex">RUEX</option>
             <option value="rusg">RUSG</option>
           </select>
-          <button v-on:click="sendToParent" @click="$emit('my-event')">Добавить</button>
+          <button @click="addNewElement">Добавить</button>
         </div>
       </div>
     </div>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'ModalWindow',
   data() {
@@ -45,12 +47,14 @@ export default {
     };
   },
   methods: {
-    sendToParent() {
-      this.$emit('updateParent', {
+    ...mapMutations(['ADD_ELEMENT']),
+    addNewElement() {
+      this.ADD_ELEMENT({
         invoice: this.invoice,
         time: this.time,
         orderType: this.orderType,
       });
+      this.closeModal();
     },
     closeModal() {
       this.$emit('closeModalW', {

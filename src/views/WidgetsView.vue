@@ -5,7 +5,7 @@
                          @change="saveArr"
                          tag="ul"
                          v-bind="dragOptions"
-                         v-model="arrComponents"
+                         v-model="allPosts"
                          @start="dragging=true"
                          @end="dragging=false">
                 <transition-group class="widgets__list"
@@ -13,7 +13,7 @@
                                   :name="!dragging ? 'flip-list' : null">
                   <li
                     class="list-group-item"
-                    v-for="component in arrComponents" :key="component.id">
+                    v-for="component in allPosts" :key="component.id">
                     <widget-item :item="component"></widget-item>
                   </li>
                 </transition-group>
@@ -26,16 +26,17 @@
 // @ is an alias to /src
 import draggable from 'vuedraggable';
 import WidgetItem from '@/components/WidgetItem.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
-  props: ['arrComponents'],
   data() {
     return {
       dragging: false,
     };
   },
   computed: {
+    ...mapGetters(['allPosts']),
     dragOptions() {
       return {
         animation: 200,
@@ -47,7 +48,7 @@ export default {
   },
   methods: {
     saveArr() {
-      localStorage.setItem('arrStorage', JSON.stringify(this.arrComponents));
+      localStorage.setItem('arrStorage', JSON.stringify(this.allPosts));
     },
   },
   components: {

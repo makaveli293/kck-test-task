@@ -8,7 +8,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in arrComponents" :key = "item.id">
+                  <tr v-for="item in allPosts" :key = "item.id">
                    <td v-for="key in gridColumns" :key = "key">
                      {{item[key]}}
                    </td>
@@ -29,8 +29,9 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
-  props: ['arrComponents'],
   name: 'TableView',
   data() {
     return {
@@ -51,18 +52,15 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters(['allPosts']),
+  },
   methods: {
+    ...mapMutations(['DELETE_ELEMENT']),
     deleteItem(key) {
-      this.arrComponents.forEach((el, index) => {
-        if (el.id === key) {
-          this.arrComponents.splice(index, 1);
-        }
-        return false;
+      this.DELETE_ELEMENT({
+        key,
       });
-      this.saveArr();
-    },
-    saveArr() {
-      localStorage.setItem('arrStorage', JSON.stringify(this.arrComponents));
     },
   },
 };
