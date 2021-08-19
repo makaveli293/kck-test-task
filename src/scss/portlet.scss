@@ -318,3 +318,27 @@ th.active .arrow {
 //  background: url("../assets/open-action-button.svg") no-repeat;
 //}
 
+.edit-column {
+  position: relative;
+  text-align: right;
+}
+
+.edit-column1 {
+  padding: 2px;
+}
+.edit-column1.open-panel {
+  border: 1px solid #e5e9ec;
+}
+
+.action-panel-buttons {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}
+.action-panel-buttons button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  display: inline;
+}
+

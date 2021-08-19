@@ -24,7 +24,6 @@
 
 <script>
 // @ is an alias to /src
-import vClickOutside from 'v-click-outside';
 import draggable from 'vuedraggable';
 import WidgetItem from '@/components/WidgetItem.vue';
 
@@ -35,9 +34,6 @@ export default {
     return {
       dragging: false,
     };
-  },
-  directives: {
-    clickOutside: vClickOutside.directive,
   },
   computed: {
     dragOptions() {
@@ -50,11 +46,6 @@ export default {
     },
   },
   methods: {
-    onClickOutside() {
-      if (this.isModal === true) {
-        this.openModal();
-      }
-    },
     saveArr() {
       localStorage.setItem('arrStorage', JSON.stringify(this.arrComponents));
     },
