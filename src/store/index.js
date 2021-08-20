@@ -35,6 +35,7 @@ export default new Vuex.Store({
         arrivalTime: newElement.time || '-',
         title: `Товар: ${Math.floor(Math.random() * (1000 - 1 + 1)) + 1}`,
         orderType: newElement.orderType || '-',
+        isEdit: false,
       };
       state.arrComponents.push(el);
       localStorage.setItem('arrStorage', JSON.stringify(state.arrComponents));
