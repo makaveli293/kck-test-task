@@ -2,10 +2,10 @@
           <div class="cards">
             <div class="widgets">
               <draggable class="list-group widgets__list"
-                         @change="saveArr"
                          tag="ul"
+                         @change="saveArr"
                          v-bind="dragOptions"
-                         v-model="filteredPosts"
+                         v-model="startArr"
                          @start="dragging=true"
                          @end="dragging=false">
                 <transition-group class="widgets__list"
@@ -37,6 +37,14 @@ export default {
   },
   computed: {
     ...mapGetters(['allPosts', 'filteredPosts']),
+    startArr: {
+      get() {
+        return this.filteredPosts;
+      },
+      set(value) {
+        this.$store.commit('UPDATE_ARRAY', value);
+      },
+    },
     dragOptions() {
       return {
         animation: 200,
