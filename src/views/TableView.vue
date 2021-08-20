@@ -66,13 +66,8 @@ export default {
   },
   methods: {
     editRow(val) {
-      const item = this.filteredPosts.filter((el) => {
-        if (el.id === val) {
-          return el;
-        }
-        return undefined;
-      });
-      item[0].isEdit = !item[0].isEdit;
+      const item = this.filteredPosts.find((el) => el.id === val);
+      item.isEdit = !item.isEdit;
       localStorage.setItem('arrStorage', JSON.stringify(this.filteredPosts));
     },
     ...mapMutations(['DELETE_ELEMENT']),

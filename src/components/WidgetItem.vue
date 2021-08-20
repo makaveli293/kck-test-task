@@ -3,9 +3,10 @@
     <header>
       {{ item.title }}
       <div class="item-menu">
+        <img @click="deleteItem(item.id)" src="../assets/delete-btn.svg" alt="">
         <img @click="editCard(item.id)" src="../assets/edit.png" alt="">
+        <img src="../assets/move.png" alt="">
       </div>
-      <img src="../assets/move.png" alt="">
     </header>
     <table>
       <tbody>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'WidgetItem',
@@ -57,14 +58,15 @@ export default {
     ...mapGetters(['allPosts', 'filteredPosts']),
   },
   methods: {
-    editCard(val) {
-      const item = this.filteredPosts.filter((el) => {
-        if (el.id === val) {
-          return el;
-        }
-        return undefined;
+    ...mapMutations(['DELETE_ELEMENT']),
+    deleteItem(key) {
+      this.DELETE_ELEMENT({
+        key,
       });
-      item[0].isEdit = !item[0].isEdit;
+    },
+    editCard(val) {
+      const item = this.filteredPosts.find((el) => el.id === val);
+      item.isEdit = !item.isEdit;
       localStorage.setItem('arrStorage', JSON.stringify(this.filteredPosts));
     },
   },
