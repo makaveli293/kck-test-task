@@ -51,7 +51,7 @@ export default new Vuex.Store({
       const regexpOrder = new RegExp(obj.order, 'i');
       const regexpInvoice = new RegExp(obj.invoice, 'i');
       const regexpId = new RegExp(obj.id, 'i');
-      state.arrComponents = state.arrComponents.filter((el) => {
+      state.filteredArr = state.arrComponents.filter((el) => {
         if ((regexpOrder.test(el.orderType))
           && (regexpInvoice.test(el.invoiceNumber))
           && (regexpId.test(el.id))) {

@@ -65,22 +65,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-.action-panel {
-  border: none;
-  background: url("../assets/open-action-button.svg") no-repeat 80% 60%;
-  width: 30px;
-  height: 30px;
-}
-
-.edit-button {
-  background: url("../assets/edit-btn.svg") no-repeat ;
-  background-size: 50%;
-}
-.delete-button {
-  background: url("../assets/delete-btn.svg") no-repeat ;
-  background-size: 40%;
-}
-</style>
