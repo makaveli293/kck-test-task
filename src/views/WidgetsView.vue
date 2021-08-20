@@ -5,7 +5,7 @@
                          @change="saveArr"
                          tag="ul"
                          v-bind="dragOptions"
-                         v-model="allPosts"
+                         v-model="filteredPosts"
                          @start="dragging=true"
                          @end="dragging=false">
                 <transition-group class="widgets__list"
@@ -13,7 +13,7 @@
                                   :name="!dragging ? 'flip-list' : null">
                   <li
                     class="list-group-item"
-                    v-for="component in allPosts" :key="component.id">
+                    v-for="component in filteredPosts" :key="component.id">
                     <widget-item :item="component"></widget-item>
                   </li>
                 </transition-group>
@@ -36,7 +36,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['allPosts']),
+    ...mapGetters(['allPosts', 'filteredPosts']),
     dragOptions() {
       return {
         animation: 200,

@@ -8,7 +8,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in allPosts" :key = "item.id">
+                  <tr v-for="item in filteredPosts" :key = "item.id">
                    <td v-for="key in gridColumns" :key = "key">
                      {{item[key]}}
                    </td>
@@ -53,7 +53,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['allPosts']),
+    ...mapGetters(['allPosts', 'filteredPosts']),
   },
   methods: {
     ...mapMutations(['DELETE_ELEMENT']),

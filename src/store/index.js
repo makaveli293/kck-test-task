@@ -20,6 +20,7 @@ export default new Vuex.Store({
   mutations: {
     UPDATE_ARRAY(state, array) {
       state.arrComponents = array;
+      state.filteredArr = array;
     },
     ADD_ELEMENT(state, newElement) {
       const currentDateWithFormat = new Date()
@@ -108,12 +109,15 @@ export default new Vuex.Store({
     getArray({ commit }) {
       if (localStorage.getItem('arrStorage') !== null) {
         const array = JSON.parse(localStorage.getItem('arrStorage'));
-        // this.filteredArr = JSON.parse(localStorage.getItem('arrStorage'));
         commit('UPDATE_ARRAY', array);
       }
     },
     setArray(state) {
       localStorage.setItem('arrStorage', JSON.stringify(state.arrComponents));
+    },
+    addElToArray({ commit, state }, obj) {
+      commit('ADD_ELEMENT', obj);
+      state.filteredArr = state.arrComponents;
     },
   },
   modules: {

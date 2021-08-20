@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'ModalWindow',
@@ -47,9 +47,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['addElToArray']),
     ...mapMutations(['ADD_ELEMENT']),
     addNewElement() {
-      this.ADD_ELEMENT({
+      this.addElToArray({
         invoice: this.invoice,
         time: this.time,
         orderType: this.orderType,
