@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'TableView',
@@ -59,16 +59,27 @@ export default {
         'dateCreation',
         'arrivalTime',
       ],
+      editedRowData: {
+        id: '',
+        invoiceNumber: '',
+        orderType: '',
+        dateCreation: '',
+        arrivalTime: '',
+      },
     };
   },
   computed: {
     ...mapGetters(['allPosts', 'filteredPosts']),
   },
   methods: {
+    ...mapActions(['editElement']),
     editRow(val) {
       const item = this.filteredPosts.find((el) => el.id === val);
       item.isEdit = !item.isEdit;
-      localStorage.setItem('arrStorage', JSON.stringify(this.filteredPosts));
+      this.editElement({
+        // ...this.editedRowData,
+        ...item,
+      });
     },
     ...mapMutations(['DELETE_ELEMENT']),
     deleteItem(key) {

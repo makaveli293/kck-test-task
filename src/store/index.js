@@ -22,6 +22,15 @@ export default new Vuex.Store({
       state.arrComponents = array;
       state.filteredArr = array;
     },
+    EDIT_ELEMENT(state, obj) {
+      state.arrComponents.forEach((el, index, array) => {
+        if (el.id === obj.id) {
+          array.splice(index, 1, obj);
+        }
+        return false;
+      });
+      localStorage.setItem('arrStorage', JSON.stringify(state.arrComponents));
+    },
     ADD_ELEMENT(state, newElement) {
       const currentDateWithFormat = new Date()
         .toJSON()
@@ -119,6 +128,9 @@ export default new Vuex.Store({
     addElToArray({ commit, state }, obj) {
       commit('ADD_ELEMENT', obj);
       state.filteredArr = state.arrComponents;
+    },
+    editElement({ commit }, obj) {
+      commit('EDIT_ELEMENT', obj);
     },
   },
   modules: {
