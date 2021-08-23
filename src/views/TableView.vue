@@ -10,11 +10,11 @@
                 <tbody>
                   <tr v-for="item in filteredPosts" :key = "item.id">
                     <template v-if="item.isEdit">
-                      <td><input v-model="item.id" type="text"></td>
-                      <td><input v-model="item.invoiceNumber" type="text"></td>
-                      <td><input v-model="item.orderType" type="text"></td>
-                      <td><input v-model="item.dateCreation" type="text"></td>
-                      <td><input v-model="item.arrivalTime" type="text"></td>
+                      <td>{{item.id}}</td>
+                      <td><input v-model="editedRowData.invoiceNumber" type="text"></td>
+                      <td><input v-model="editedRowData.orderType" type="text"></td>
+                      <td><input v-model="editedRowData.dateCreation" type="text"></td>
+                      <td><input v-model="editedRowData.arrivalTime" type="text"></td>
                     </template>
                    <template v-else>
                      <td v-for="key in gridColumns" :key = "key">
@@ -26,7 +26,7 @@
                         <button @click="isActionPanel=!isActionPanel"
                                 class="action-panel"></button>
                         <div v-if="isActionPanel" class="action-panel-buttons">
-                          <button @click="editRow(item.id)" class="edit-button"></button>
+                          <button @click="editRow(item)" class="edit-button"></button>
                           <button @click="deleteItem(item.id)" class="delete-button"></button>
                         </div>
                       </div>
@@ -65,6 +65,8 @@ export default {
         orderType: '',
         dateCreation: '',
         arrivalTime: '',
+        title: '',
+        isEdit: false,
       },
     };
   },
@@ -73,13 +75,22 @@ export default {
   },
   methods: {
     ...mapActions(['editElement']),
-    editRow(val) {
-      const item = this.filteredPosts.find((el) => el.id === val);
+    editRow(obj) {
+      const item = this.filteredPosts.find((el) => el.id === obj.id);
       item.isEdit = !item.isEdit;
-      this.editElement({
-        // ...this.editedRowData,
-        ...item,
-      });
+      if (obj.isEdit) {
+        this.editedRowData.id = obj.id;
+        this.editedRowData.invoiceNumber = obj.invoiceNumber;
+        this.editedRowData.orderType = obj.orderType;
+        this.editedRowData.dateCreation = obj.dateCreation;
+        this.editedRowData.arrivalTime = obj.arrivalTime;
+        this.editedRowData.title = obj.title;
+      }
+      if (!obj.isEdit) {
+        this.editElement({
+          ...this.editedRowData,
+        });
+      }
     },
     ...mapMutations(['DELETE_ELEMENT']),
     deleteItem(key) {
