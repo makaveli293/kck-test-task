@@ -6,6 +6,7 @@
                   :items="filteredPosts"
                   :sortParams="sortParams"
                   :sortParamsDefault="sortParamsDefault"
+                  @onChangeSort="handleChangeSort"
                 ></a-table>
               </div>
             </div>
@@ -49,6 +50,7 @@ export default {
         },
         {
           key: 'orderType',
+          name: 'orderType',
           title: 'Тип заказа',
           headerAlign: 'center',
           dataAlign: 'left',
@@ -56,6 +58,7 @@ export default {
         },
         {
           key: 'dateCreation',
+          name: 'dateCreation',
           title: 'Дата создания',
           headerAlign: 'center',
           dataAlign: 'center',
@@ -76,10 +79,19 @@ export default {
     ...mapGetters(['allPosts', 'filteredPosts']),
   },
   methods: {
-    ...mapMutations(['DELETE_ELEMENT']),
+    ...mapMutations(['DELETE_ELEMENT', 'SORT_ARRAY_IN_COLUMN']),
     deleteItem(key) {
       this.DELETE_ELEMENT({
         key,
+      });
+    },
+    handleChangeSort(obj) {
+      this.sortParams.sidx = obj.data.sidx;
+      this.sortParams.sord = obj.data.sord;
+
+      this.SORT_ARRAY_IN_COLUMN({
+        sortingType: obj.data.sidx,
+        sortingDirection: obj.data.sord,
       });
     },
   },

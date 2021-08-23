@@ -114,6 +114,29 @@ export default new Vuex.Store({
       }
       return 0;
     },
+    SORT_ARRAY_IN_COLUMN(state, obj) {
+      if (obj.sortingDirection === 'asc') {
+        state.arrComponents.sort((a, b) => {
+          if (a[obj.sortingType] < b[obj.sortingType]) {
+            return -1;
+          }
+          if (a[obj.sortingType] > b[obj.sortingType]) {
+            return 1;
+          }
+          return 0;
+        });
+      } else {
+        state.arrComponents.sort((a, b) => {
+          if (a[obj.sortingType] < b[obj.sortingType]) {
+            return 1;
+          }
+          if (a[obj.sortingType] > b[obj.sortingType]) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+    },
   },
   actions: {
     getArray({ commit }) {
